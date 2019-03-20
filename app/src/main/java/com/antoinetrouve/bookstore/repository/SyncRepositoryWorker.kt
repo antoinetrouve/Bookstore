@@ -15,7 +15,6 @@ class SyncRepositoryWorker(context : Context, params: WorkerParameters) : Worker
 
         bookDao.insertBooks(bookApi.loadBooks())
 
-
         return Result.success()
     }
 }

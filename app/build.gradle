@@ -31,11 +31,11 @@ dependencies {
 
 
     // UI
-    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
-    implementation "androidx.core:core:1.1.0-alpha03" // com.android.support:support-compat
-    implementation "androidx.recyclerview:recyclerview:1.1.0-alpha01"
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha03'
+    implementation "androidx.core:core:1.1.0-alpha05" // com.android.support:support-compat
+    implementation "androidx.recyclerview:recyclerview:1.1.0-alpha03"
     implementation "androidx.cardview:cardview:1.0.0"
-    implementation "com.google.android.material:material:1.1.0-alpha02"
+    implementation "com.google.android.material:material:1.1.0-alpha04"
 
     // ViewModel and LiveData
     def lifecycle_version = "2.1.0-alpha01"
