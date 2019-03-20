@@ -1,7 +1,8 @@
-package com.antoinetrouve.bookstore
+package com.antoinetrouve.bookstore.booklist
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.antoinetrouve.bookstore.R
 
 class BooksListActivity : AppCompatActivity() {
 
