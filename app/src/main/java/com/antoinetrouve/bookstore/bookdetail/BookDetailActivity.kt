@@ -1,13 +1,15 @@
 package com.antoinetrouve.bookstore.bookdetail
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.antoinetrouve.bookstore.Book
 import com.antoinetrouve.bookstore.R
+import com.squareup.picasso.Picasso
 
 import kotlinx.android.synthetic.main.activity_book_detail.*
+import kotlinx.android.synthetic.main.content_book_detail.*
 import timber.log.Timber
 
 class BookDetailActivity : AppCompatActivity() {
@@ -27,8 +29,20 @@ class BookDetailActivity : AppCompatActivity() {
         // Pass book id when attach viewModel to activity without call constructor directly to keep
         // separate view and model
         val factory = BookDetailViewModelFactory(bookId)
-        ViewModelProviders.of(this, factory).get(BookDetailViewModel::class.java)
-
+        val viewModel = ViewModelProviders.of(this, factory).get(BookDetailViewModel::class.java)
+        viewModel.book.observe(this, Observer { book ->
+            updateBook(book!!)
+        })
     }
 
+    private fun updateBook(book: Book) {
+        Picasso.get()
+            .load(book.pictureUrl)
+            .placeholder(R.drawable.ic_placehoder_image)
+            .into(bookCover)
+
+        bookTitle.text = book.title
+        bookAuthor.text = book.author
+        bookSummary.text = book.summary
+    }
 }
