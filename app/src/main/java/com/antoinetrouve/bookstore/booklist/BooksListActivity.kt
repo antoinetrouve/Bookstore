@@ -1,5 +1,6 @@
 package com.antoinetrouve.bookstore.booklist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -7,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoinetrouve.bookstore.Book
 import com.antoinetrouve.bookstore.R
+import com.antoinetrouve.bookstore.bookdetail.BookDetailActivity
 import kotlinx.android.synthetic.main.activity_books_list.*
 import timber.log.Timber
 
@@ -46,6 +48,8 @@ class BooksListActivity : AppCompatActivity(), BooksListAdapater.BooksListAdapte
     }
 
     override fun onBookSelected(book: Book) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val intent = Intent(this, BookDetailActivity::class.java)
+        intent.putExtra(BookDetailActivity.EXTRA_BOOK_ID, book.id)
+        startActivity(intent)
     }
 }

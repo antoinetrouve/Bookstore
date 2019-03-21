@@ -35,6 +35,7 @@ class BooksListAdapater(private val books: List<Book>,
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val book = books[position]
+
         with(holder) {
             cardView.setOnClickListener(this@BooksListAdapater)
             cardView.tag = book
@@ -52,7 +53,10 @@ class BooksListAdapater(private val books: List<Book>,
     override fun getItemCount(): Int = books.size
 
     override fun onClick(v: View?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when(v?.id) {
+            R.id.cardView -> listener?.onBookSelected(v?.tag as Book)
+
+        }
     }
 
 }
