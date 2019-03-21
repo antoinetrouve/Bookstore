@@ -23,7 +23,7 @@ class BookRepository {
     }
 
     fun scheduleBooksSync() {
-        Timber.i("Synchronization books every 12 hous")
+        Timber.i("Synchronization books every 12 hours")
         val work = PeriodicWorkRequestBuilder<SyncRepositoryWorker>(12, TimeUnit.HOURS)
             .setConstraints(constraints)
             .build()

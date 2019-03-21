@@ -12,11 +12,10 @@ import com.antoinetrouve.bookstore.R
 import com.squareup.picasso.Picasso
 
 class BooksListAdapater(private val books: List<Book>,
-                        private val listener: BooksListAdapterListener?) : RecyclerView.Adapter<BooksListAdapater.ViewHolder>(),
-    View.OnClickListener {
+                        private val listener: BooksListAdapterListener?)
+    : RecyclerView.Adapter<BooksListAdapater.ViewHolder>(), View.OnClickListener {
 
     interface BooksListAdapterListener {
-
         fun onBookSelected(book: Book)
     }
 
@@ -25,7 +24,6 @@ class BooksListAdapater(private val books: List<Book>,
         val bookCover = itemView.findViewById<ImageView>(R.id.bookCover)!!
         val bookTitle = itemView.findViewById<TextView>(R.id.bookTitle)!!
         val bookAuthor = itemView.findViewById<TextView>(R.id.bookAuthor)!!
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
