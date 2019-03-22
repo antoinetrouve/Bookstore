@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.antoinetrouve.bookstore.App
 import com.antoinetrouve.bookstore.Book
+import timber.log.Timber
 
 class BookDetailViewModel(bookId: Int) : ViewModel() {
     private val bookIdLiveData = MutableLiveData<Int>()
@@ -16,5 +17,9 @@ class BookDetailViewModel(bookId: Int) : ViewModel() {
 
     init {
         bookIdLiveData.value = bookId
+    }
+
+    fun onDeleteAction() {
+        Timber.d("onDeleteAction")
     }
 }

@@ -17,6 +17,8 @@ import timber.log.Timber
 
 class BookDetailActivity : AppCompatActivity() {
 
+    private lateinit var viewModel: BookDetailViewModel
+
     companion object {
         const val EXTRA_BOOK_ID = "bookId"
     }
@@ -47,6 +49,7 @@ class BookDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_delete_book -> {
+                viewModel.onDeleteAction()
                 true
             }
             else -> {
