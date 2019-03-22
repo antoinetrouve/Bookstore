@@ -2,6 +2,7 @@ package com.antoinetrouve.bookstore.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.antoinetrouve.bookstore.Book
@@ -17,4 +18,7 @@ interface BookDao {
 
     @Insert
     fun insertBooks(books: List<Book>)
+
+    @Delete
+    fun deleteBookById(book: Book)
 }
