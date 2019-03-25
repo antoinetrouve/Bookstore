@@ -34,7 +34,7 @@ class BookDetailActivity : AppCompatActivity() {
         // Pass book id when attach viewModel to activity without call constructor directly to keep
         // separate view and model
         val factory = BookDetailViewModelFactory(bookId)
-        val viewModel = ViewModelProviders.of(this, factory).get(BookDetailViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, factory).get(BookDetailViewModel::class.java)
         viewModel.book.observe(this, Observer { book ->
             updateBook(book!!)
         })
@@ -49,7 +49,9 @@ class BookDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_delete_book -> {
+                if (viewModel.book.hasObservers()) viewModel.book.removeObservers(this)
                 viewModel.onDeleteAction()
+                finish()
                 true
             }
             else -> {

@@ -31,4 +31,16 @@ class BookRepository {
         WorkManager.getInstance()
             .enqueueUniquePeriodicWork("syncBooksScheduled", ExistingPeriodicWorkPolicy.KEEP, work)
     }
+
+    fun deleteBook(bookId: Int) {
+        Timber.i("Process delete book $bookId")
+        val work = OneTimeWorkRequestBuilder<DeleteBookWorker>()
+            .setConstraints(constraints)
+            .setInputData(Data.Builder().putLong("BookId", bookId.toLong()).build())
+            .build()
+
+        WorkManager.getInstance()
+            .beginUniqueWork("deleteBook", ExistingWorkPolicy.KEEP, work)
+            .enqueue()
+    }
 }

@@ -19,6 +19,6 @@ interface BookDao {
     @Insert
     fun insertBooks(books: List<Book>)
 
-    @Delete
-    fun deleteBookById(book: Book)
+    @Query("DELETE FROM book WHERE id = :bookId")
+    fun deleteBook(bookId: Long)
 }
