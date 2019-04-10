@@ -31,11 +31,13 @@ class BookDetailActivity : AppCompatActivity() {
         val bookId = intent.getIntExtra(EXTRA_BOOK_ID, 1)
         Timber.d("Book id = $bookId")
 
-        // Pass book id when attach viewModel to activity without call constructor directly to keep
-        // separate view and model
+        // Pass book id when attach viewModel to activity to keep separate view and model
         val factory = BookDetailViewModelFactory(bookId)
         viewModel = ViewModelProviders.of(this, factory).get(BookDetailViewModel::class.java)
+
+        // Observe book change
         viewModel.book.observe(this, Observer { book ->
+            // On Change update book
             updateBook(book!!)
         })
     }
@@ -49,8 +51,13 @@ class BookDetailActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_delete_book -> {
+                // Remove book observers to avoid nullPointerException when delete a book
                 if (viewModel.book.hasObservers()) viewModel.book.removeObservers(this)
+
+                // Delete the book
                 viewModel.onDeleteAction()
+
+                // Comme back to BookListActivity
                 finish()
                 true
             }
