@@ -11,9 +11,9 @@ import com.antoinetrouve.bookstore.Book
 import com.antoinetrouve.bookstore.R
 import com.squareup.picasso.Picasso
 
-class BooksListAdapater(private val books: List<Book>,
-                        private val listener: BooksListAdapterListener?)
-    : RecyclerView.Adapter<BooksListAdapater.ViewHolder>(), View.OnClickListener {
+class BooksListAdapter(private val books: List<Book>,
+                       private val listener: BooksListAdapterListener?)
+    : RecyclerView.Adapter<BooksListAdapter.ViewHolder>(), View.OnClickListener {
 
     interface BooksListAdapterListener {
         fun onBookSelected(book: Book)
@@ -37,7 +37,7 @@ class BooksListAdapater(private val books: List<Book>,
         val book = books[position]
 
         with(holder) {
-            cardView.setOnClickListener(this@BooksListAdapater)
+            cardView.setOnClickListener(this@BooksListAdapter)
             cardView.tag = book
             bookTitle.text = book.title
             bookAuthor.text = book.author

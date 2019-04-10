@@ -12,4 +12,8 @@ class BooksListViewModel : ViewModel() {
     fun refreshBooks() {
         App.repository.syncBookNow()
     }
+
+    fun deleteBook(book: Book) {
+        App.repository.deleteBook(book.id)
+    }
 }

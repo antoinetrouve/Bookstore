@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.antoinetrouve.bookstore.Book
 import com.antoinetrouve.bookstore.R
@@ -12,9 +13,10 @@ import com.antoinetrouve.bookstore.bookdetail.BookDetailActivity
 import kotlinx.android.synthetic.main.activity_books_list.*
 import timber.log.Timber
 
-class BooksListActivity : AppCompatActivity(), BooksListAdapater.BooksListAdapterListener {
+class BooksListActivity : AppCompatActivity(), BooksListAdapter.BooksListAdapterListener, SwipeToDeleteHandler.SwipeListener {
     private lateinit var viewModel: BooksListViewModel
-    private lateinit var booksAdapter: BooksListAdapater
+
+    private lateinit var booksAdapter: BooksListAdapter
     private lateinit var books: MutableList<Book>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,21 +24,30 @@ class BooksListActivity : AppCompatActivity(), BooksListAdapater.BooksListAdapte
         setContentView(R.layout.activity_books_list)
 
         books = mutableListOf()
-        booksAdapter = BooksListAdapater(books, this)
+        booksAdapter = BooksListAdapter(books, this)
 
-        // Ini recycler view with view root and adapter
+        // Init recycler view with view root and adapter
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@BooksListActivity)
             adapter = booksAdapter
         }
 
+        // Init swipe refresh action
         swipeRefresh.setOnRefreshListener { viewModel.refreshBooks() }
+
+        // Init swipe delete action
+        ItemTouchHelper(SwipeToDeleteHandler(this, this)).attachToRecyclerView(recyclerView)
 
         // create viewModel instance
         viewModel = ViewModelProviders.of(this).get(BooksListViewModel::class.java)
         viewModel.books.observe(this, Observer { newBooks ->
             updateBooks(newBooks!!)
         })
+    }
+
+    override fun onSwipeBook(book: Book, position: Int) {
+        viewModel.deleteBook(book)
+        booksAdapter.notifyItemRemoved(position)
     }
 
     private fun updateBooks(newBooks: List<Book>) {
