@@ -6,7 +6,11 @@ import com.antoinetrouve.bookstore.Book
 
 const val DATABASE_NAME = "book_store"
 
-@Database(entities = [Book::class], version = 1)
+/**
+ * Note : Export Database schema directory is provided in gradle file
+ * See : https://stackoverflow.com/questions/44322178/room-schema-export-directory-is-not-provided-to-the-annotation-processor-so-we
+ */
+@Database(entities = [Book::class], version = 1, exportSchema = true)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
 }

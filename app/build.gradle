@@ -8,6 +8,7 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.antoinetrouve.bookstore"
         minSdkVersion 16
@@ -15,7 +16,21 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Export database schema as good practice
+        kapt {
+            arguments {
+                arg("room.schemaLocation", "$projectDir/schemas".toString())
+            }
+        }
     }
+
+    // add the schema location to the source sets used by Room, to test migrations
+    // See : https://medium.com/androiddevelopers/testing-room-migrations-be93cdb0d975
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
+    }
+
     buildTypes {
         release {
             minifyEnabled false
