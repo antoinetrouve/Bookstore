@@ -21,6 +21,10 @@ class SwipeToDeleteHandler(context: Context,
         fun onSwipeBook(book: Book, position: Int)
     }
 
+    override fun isItemViewSwipeEnabled(): Boolean {
+        return true
+    }
+
     override fun onMove(
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder,

@@ -54,7 +54,7 @@ class BooksListAdapter(private val books: List<Book>,
 
     override fun onClick(v: View?) {
         when(v?.id) {
-            R.id.cardView -> listener?.onBookSelected(v?.tag as Book)
+            R.id.cardView -> listener?.onBookSelected(v.tag as Book)
         }
     }
 
