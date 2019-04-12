@@ -13,12 +13,12 @@ import com.antoinetrouve.bookstore.bookdetail.BookDetailActivity
 import kotlinx.android.synthetic.main.activity_books_list.*
 import timber.log.Timber
 
-class BooksListActivity : AppCompatActivity(), BooksListAdapter.BooksListAdapterListener, SwipeToDeleteHandler.SwipeListener {
+class BooksListActivity : AppCompatActivity(), BooksListAdapter.BooksListAdapterListener {
     private lateinit var viewModel: BooksListViewModel
 
     private lateinit var booksAdapter: BooksListAdapter
-    private lateinit var books: MutableList<Book>
 
+    private lateinit var books: MutableList<Book>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_books_list)
@@ -36,7 +36,7 @@ class BooksListActivity : AppCompatActivity(), BooksListAdapter.BooksListAdapter
         swipeRefresh.setOnRefreshListener { viewModel.refreshBooks() }
 
         // Init swipe delete action
-        ItemTouchHelper(SwipeToDeleteHandler(this, this)).attachToRecyclerView(recyclerView)
+        ItemTouchHelper(SwipeToDeleteHandler(this, booksAdapter)).attachToRecyclerView(recyclerView)
 
         // create viewModel instance
         viewModel = ViewModelProviders.of(this).get(BooksListViewModel::class.java)
@@ -45,9 +45,10 @@ class BooksListActivity : AppCompatActivity(), BooksListAdapter.BooksListAdapter
         })
     }
 
-    override fun onSwipeBook(book: Book, position: Int) {
+    override fun onBookDeleted(book: Book) {
+        // Delete the book,
+        // no need to notify adapter thanks to liveData books observe
         viewModel.deleteBook(book)
-        booksAdapter.notifyItemRemoved(position)
     }
 
     private fun updateBooks(newBooks: List<Book>) {

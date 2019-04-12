@@ -7,18 +7,17 @@ import android.graphics.drawable.ColorDrawable
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.antoinetrouve.bookstore.Book
 import com.antoinetrouve.bookstore.R
 
 class SwipeToDeleteHandler(context: Context,
                            private val listener: SwipeListener?)
-    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT + ItemTouchHelper.RIGHT) {
 
     private val background = ColorDrawable(Color.RED)
-    private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_action_delete)
+    private val icon = ContextCompat.getDrawable(context, R.drawable.ic_delete_white_24dp)
 
     interface SwipeListener {
-        fun onSwipeBook(book: Book, position: Int)
+        fun onSwipeBook(position: Int)
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {
@@ -34,10 +33,9 @@ class SwipeToDeleteHandler(context: Context,
     }
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        // On Swipe get the book and the position
+        // On Swipe get the position
         viewHolder.let {
-            val listBookViewHolder = viewHolder as BooksListAdapter.ViewHolder
-            listener?.onSwipeBook(listBookViewHolder.cardView.tag as Book, listBookViewHolder.adapterPosition)
+            listener?.onSwipeBook((viewHolder as BooksListAdapter.ViewHolder).adapterPosition)
         }
     }
 
@@ -50,29 +48,68 @@ class SwipeToDeleteHandler(context: Context,
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
+        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
 
         val itemView = viewHolder.itemView // The view being swiped
+        val backgroundCornerOffset = 30 // Keep background behind the rounded corners of itemView
 
-        // Draw the red delete background
-        background.apply {
-            setBounds(itemView.right + dX.toInt(), itemView.top, itemView.right, itemView.bottom)
-            draw(canvas)
+        // calc top and bottom dimension
+         val iconTop = itemView.top + (itemView.height - icon!!.intrinsicHeight) / 2
+         val iconBottom = iconTop + icon.intrinsicHeight
+
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            when {
+                // swipe to the right
+                dX > 0 -> {
+
+                    // Draw the red delete background
+                    background.apply {
+                        setBounds(
+                            itemView.left,
+                            itemView.top,
+                            itemView.left + dX.toInt() + backgroundCornerOffset,
+                            itemView.bottom
+                        )
+                        // /!\ Draw the background before the icon
+                        draw(canvas)
+                    }
+
+                    // Draw the icon
+                    icon.apply {
+                        // Calculate position of delete icon
+                        val iconMargin = (itemView.height + icon.intrinsicHeight) / 2
+                        val iconLeft = itemView.left + iconMargin - icon.intrinsicWidth
+                        val iconRight = itemView.left + iconMargin
+
+                        setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        draw(canvas)
+                    }
+                }
+                dX < 0 -> { // swipe to the left
+                    // Draw the red delete background
+                    background.apply {
+                        setBounds(
+                            itemView.right + dX.toInt() - backgroundCornerOffset,
+                            itemView.top,
+                            itemView.right,
+                            itemView.bottom
+                        )
+                        draw(canvas)
+                    }
+
+                    // Draw the icon
+                    icon.apply {
+                        // Calculate position of delete icon
+                        val iconMargin = (itemView.height - icon.intrinsicHeight) / 2
+                        val iconLeft = itemView.right - iconMargin - icon.intrinsicWidth
+                        val iconRight = itemView.right - iconMargin
+
+                        setBounds(iconLeft, iconTop, iconRight, iconBottom)
+                        draw(canvas)
+                    }
+                }
+                else -> background.setBounds(0, 0, 0, 0) // view is not swiped
+            }
         }
-
-        // Draw the delete icon
-        deleteIcon?.apply {
-            // Calculate position of delete icon
-            val itemHeight = itemView.bottom - itemView.top
-            val deleteIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
-            val deleteIconMargin = (itemHeight - intrinsicHeight) / 2
-            val deleteIconLeft = itemView.right - deleteIconMargin - intrinsicWidth
-            val deleteIconRight = itemView.right - deleteIconMargin
-            val deleteIconBottom = deleteIconTop + intrinsicHeight
-
-            setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
-            draw(canvas)
-        }
-
-        super.onChildDraw(canvas, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 }

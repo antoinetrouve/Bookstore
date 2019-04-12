@@ -13,10 +13,11 @@ import com.squareup.picasso.Picasso
 
 class BooksListAdapter(private val books: List<Book>,
                        private val listener: BooksListAdapterListener?)
-    : RecyclerView.Adapter<BooksListAdapter.ViewHolder>(), View.OnClickListener {
+    : RecyclerView.Adapter<BooksListAdapter.ViewHolder>(), View.OnClickListener, SwipeToDeleteHandler.SwipeListener {
 
     interface BooksListAdapterListener {
         fun onBookSelected(book: Book)
+        fun onBookDeleted(book: Book)
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -56,6 +57,11 @@ class BooksListAdapter(private val books: List<Book>,
         when(v?.id) {
             R.id.cardView -> listener?.onBookSelected(v.tag as Book)
         }
+    }
+
+    override fun onSwipeBook(position: Int) {
+        // Dispatch the event
+        listener?.onBookDeleted(books[position])
     }
 
 }
