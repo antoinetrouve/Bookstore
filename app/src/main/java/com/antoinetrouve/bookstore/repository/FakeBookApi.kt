@@ -43,7 +43,7 @@ class FakeBookApi {
             newBookIndex = bookSize
         }
 
-        Timber.i("Book range : $bookIndex / $newBookIndex")
+        Timber.i("BookModel range : $bookIndex / $newBookIndex")
         val bookSlice = BOOKS.subList(bookIndex, newBookIndex)
 
         bookIndex = newBookIndex % bookSize

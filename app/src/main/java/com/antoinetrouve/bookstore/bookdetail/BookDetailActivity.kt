@@ -29,7 +29,7 @@ class BookDetailActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val bookId = intent.getIntExtra(EXTRA_BOOK_ID, 1)
-        Timber.d("Book id = $bookId")
+        Timber.d("BookModel id = $bookId")
 
         // Pass book id when attach viewModel to activity to keep separate view and model
         val factory = BookDetailViewModelFactory(bookId)

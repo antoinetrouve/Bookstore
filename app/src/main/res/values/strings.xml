@@ -3,4 +3,6 @@
     <string name="title_activity_book_detail">BookDetailActivity</string>
     <string name="action_delete">Delete</string>
     <string name="book_cover">Book cover</string>
+    <string name="snack_bar_undo_action_text">Book deleted</string>
+    <string name="snack_bar_undo_action">Undo</string>
 </resources>
